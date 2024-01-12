@@ -1,0 +1,21 @@
+.table-container {
+    max-height: 300px; 
+    overflow-y: auto; 
+  }
+  
+  .table {
+    width: 100%; 
+  }
+
+  .generate{
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 767px) {
+    .mb-md-0 {
+      margin-top: 1rem !important; 
+    }
+  }
+  
+  
+  
