@@ -11,6 +11,7 @@ export class TableGeneratorComponent {
   tableData: number[][] = [];
   rowsErrorMessage: string = '';
   columnsErrorMessage: string = '';
+  maxConnectedArea: number = 0;
 
   generateTable() {
     this.validateInput();
@@ -47,5 +48,48 @@ export class TableGeneratorComponent {
       case 4: return 'blue';
       default: return 'white';
     }
+  }
+
+  analyzeTable() {
+    this.maxConnectedArea = this.findMaxConnectedArea();
+  }
+
+  findMaxConnectedArea(): number {
+    const visited: boolean[][] = new Array(this.rows).fill(null).map(() => new Array(this.columns).fill(false));
+    let maxArea: number = 0;
+
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.columns; j++) {
+        if (!visited[i][j]) {
+          const currentColor = this.tableData[i][j];
+          const currentArea = this.dfs(i, j, currentColor, visited);
+          maxArea = Math.max(maxArea, currentArea);
+        }
+      }
+    }
+    return maxArea;
+  }
+
+  dfs(row: number, col: number, targetColor: number, visited: boolean[][]): number {
+    if (
+      row < 0 ||
+      col < 0 ||
+      row >= this.rows ||
+      col >= this.columns ||
+      visited[row][col] ||
+      this.tableData[row][col] !== targetColor
+    ) {
+      return 0;
+    }
+
+    visited[row][col] = true;
+    let area = 1;
+
+    area += this.dfs(row - 1, col, targetColor, visited);
+    area += this.dfs(row + 1, col, targetColor, visited);
+    area += this.dfs(row, col - 1, targetColor, visited);
+    area += this.dfs(row, col + 1, targetColor, visited);
+
+    return area;
   }
 }

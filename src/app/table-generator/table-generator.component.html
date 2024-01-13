@@ -13,6 +13,13 @@
         <div class="col-md-3 generate mb-3 mb-md-0">
             <button class="btn btn-primary" (click)="generateTable()">Generieren</button>
         </div>
+        <div class="col-md-3 generate mb-3 mb-md-0">
+            <button class="btn btn-primary" (click)="analyzeTable()">Analysieren</button>
+            <div *ngIf="maxConnectedArea > 0" class="mt-2">
+                Die größte zusammenhängende Fläche hat {{ maxConnectedArea }} Zellen.
+            </div>
+        </div>
+
     </div>
 
     <div *ngIf="tableData.length > 0" class="table-container">
