@@ -25,9 +25,10 @@
     <div *ngIf="tableData.length > 0" class="table-container">
         <table class="table table-bordered table-responsive">
             <tr *ngFor="let row of tableData">
-                <td *ngFor="let cell of row" [style.background-color]="getCellColor(cell)">
+                <td *ngFor="let cell of row" [style.backgroundColor]="getCellColor(cell)">
                     {{ cell }}
                 </td>
+
             </tr>
         </table>
     </div>

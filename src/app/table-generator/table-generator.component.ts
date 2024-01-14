@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { debounce, DebouncedFunc } from 'lodash';
+
 
 @Component({
   selector: 'app-table-generator',
   templateUrl: './table-generator.component.html',
   styleUrls: ['./table-generator.component.css']
 })
-export class TableGeneratorComponent {
+export class TableGeneratorComponent implements OnInit  {
   rows: number = 2;
   columns: number = 2;
   tableData: number[][] = [];
@@ -13,6 +15,15 @@ export class TableGeneratorComponent {
   columnsErrorMessage: string = '';
   maxConnectedArea: number = 0;
 
+  debouncedGetCellColor?: DebouncedFunc<(value: number) => string>;
+
+  ngOnInit() {
+  
+    this.debouncedGetCellColor = debounce(this.getCellColor, 300);
+  }
+ 
+
+ 
   generateTable() {
     this.validateInput();
     if (this.isValidInput()) {
@@ -40,13 +51,37 @@ export class TableGeneratorComponent {
     this.columnsErrorMessage = this.isNumberInRange(this.columns) ? '' : 'Please enter a number between 2 and 100.';
   }
 
+  // getCellColor(value: number): void {
+  //   if (typeof Worker !== 'undefined') {
+  //     const worker = new Worker(new URL('../color.worker.ts', import.meta.url));
+  
+  //     worker.onmessage = ({ data }) => {
+  //         this.result = data.value;
+  //         worker.terminate();
+  //     };
+  
+  //     worker.onerror = (error) => {
+  //       console.error('Error in web worker:', error);
+  //     };
+  
+  //     worker.postMessage(value);
+  //   } else {
+  //     console.error('Web workers are not supported in this environment.');
+  //   }
+  // }
+  
   getCellColor(value: number): string {
     switch (value) {
-      case 1: return 'green';
-      case 2: return 'yellow';
-      case 3: return 'red';
-      case 4: return 'blue';
-      default: return 'white';
+      case 1:
+        return 'green';
+      case 2:
+        return 'yellow';
+      case 3:
+        return 'red';
+      case 4:
+        return 'blue';
+      default:
+        return 'white';
     }
   }
 
@@ -92,4 +127,7 @@ export class TableGeneratorComponent {
 
     return area;
   }
+
+  
 }
+
